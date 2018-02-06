@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimal-ui, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/framework7.material.colors.min.css">
+    <link rel="stylesheet" href="css/framework7.material.css">
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        html {
+            width: 100%;
+            min-height: 100%;
+            background: #f0f0f0;
+        }
+
+        .title {
+            text-align: center;
+            background: red;
+            height: 2rem;
+            line-height: 2rem;
+            font-size: 0.65rem;
+            color: white;
+        }
+
+        .nav {
+            overflow: hidden;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            display: flex;
+            background: #fff
+        }
+
+        .nav_bar {
+            display: block;
+            width: 3rem;
+            text-align: center;
+        }
+
+        .active {
+            color: red
+        }
+
+        ul {
+            padding: 0.3rem;
+            margin-top: 0.5rem
+        }
+
+        .list_li {
+            background: #fff;
+            border-radius: 0.2rem;
+            box-shadow: #a3a3a3 0rem 0rem 0.5rem -0.1rem;
+            padding: 0.2rem;
+            overflow: hidden;
+        }
+
+        .data_img {
+            height: 4.5rem;
+        }
+
+        .right_data {
+            float: right;
+            width: 7.8rem;
+            padding: 0 0.5rem
+        }
+
+        .data_title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            height: 3.5rem;
+            word-break: break-all;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            /** 对象作为伸缩盒子模型显示 **/
+            -webkit-box-orient: vertical;
+            /** 设置或检索伸缩盒对象的子元素的排列方式 **/
+            -webkit-line-clamp: 3;
+            /** 显示的行数 **/
+            overflow: hidden;
+        }
+
+        .data_from {
+            margin-right: 0.2rem
+        }
+
+        .data_time,
+        .data_from {
+            font-size: 0.5rem;
+            float: right
+        }
+    </style>
+</head>
+
+<body>
+    <h4 class="title">
+        Home
+    </h4>
+    <div class="nav">
+        <span data-id="top" class="nav_bar active">头条</span>
+        <span data-id="shehui" class="nav_bar">社会</span>
+        <span data-id="guonei" class="nav_bar">国内</span>
+        <span data-id="guoji" class="nav_bar">国际</span>
+        <span data-id="yule" class="nav_bar">娱乐</span>
+        <span data-id="tiyu" class="nav_bar">体育</span>
+        <span data-id="junshi" class="nav_bar">军事</span>
+        <span data-id="keji" class="nav_bar">科技</span>
+        <span data-id="caijing" class="nav_bar">财经</span>
+        <span data-id="shishang" class="nav_bar">时尚</span>
+    </div>
+
+    <div class="data_box">
+        <ul class="list">
+            <!-- <li class="list_li">
+                <img src="http://09.imgmini.eastday.com/mobile/20180206/20180206162720_a9af13b63a52bbc1e13a65a11c6a69bd_3_mwpm_03200403.jpg" alt="" class="data_img">
+                <div class="right_data">
+                    <p class="data_title">fffdd</p>
+                    <span class="data_time">2017/05/05</span>
+                    <span class="data_from">dd</span>
+                </div>
+            </li> -->
+        </ul>
+    </div>
+
+
+</body>
+<script src="js/auto.js"></script>
+<script src="js/framework7.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script>
+    var type = "top";
+
+    $(function () {
+        get_data();
+    })
+
+    $(".nav_bar").click(function () {
+        $(this).addClass("active");
+        $(this).siblings().removeClass("active");
+        type = $(this).data("id");
+        get_data()
+    })
+
+    function get_data() {
+        var html = "";
+        $(".list").html("");
+        $.ajax({
+            type: "GET",
+            url: "http://topnews.market.alicloudapi.com/toutiao/index",
+            data: { "type": type },
+            beforeSend: function (request) {
+                request.setRequestHeader("Authorization", "APPCODE 66576218f0024364aa459c754ba7a06e")
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log()
+                $.each(response.result.data, function (i, v) {
+                    console.log(v)
+                    html += `<li class="list_li"><a href="${v.url}">
+                <img src="${v.thumbnail_pic_s}" alt="" class="data_img">
+                <div class="right_data">
+                    <p class="data_title">${v.title}</p>
+                    <span class="data_time">${v.date}</span>
+                    <span class="data_from">${v.author_name}</span>
+                </div></a>
+            </li>`
+                });
+                $(".list").html(html)
+            }
+        });
+    }
+
+
+
+</script>
+
+</html>
