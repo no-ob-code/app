@@ -130,11 +130,11 @@
 <script src="js/jquery.min.js"></script>
 <script>
     var type = "top";
-
     $(function () {
         get_data();
     })
-
+// var arr = [1,2,3];
+console.log("arr ".repeat(10))
     $(".nav_bar").click(function () {
         $(this).addClass("active");
         $(this).siblings().removeClass("active");
@@ -148,15 +148,15 @@
         $.ajax({
             type: "GET",
             url: "http://topnews.market.alicloudapi.com/toutiao/index",
-            data: { "type": type },
+            data: {"type": type},
             beforeSend: function (request) {
                 request.setRequestHeader("Authorization", "APPCODE 66576218f0024364aa459c754ba7a06e")
             },
             dataType: "json",
             success: function (response) {
-                console.log()
+               
                 $.each(response.result.data, function (i, v) {
-                    console.log(v)
+                    // console.log(v)
                     html += `<li class="list_li"><a href="${v.url}">
                 <img src="${v.thumbnail_pic_s}" alt="" class="data_img">
                 <div class="right_data">
